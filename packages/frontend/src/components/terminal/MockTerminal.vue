@@ -1,3 +1,4 @@
+<!-- packages/frontend/src/components/terminal/MockTerminal.vue -->
 <script setup lang="ts">
 import { ref, onMounted, nextTick, watch } from 'vue';
 
@@ -5,26 +6,25 @@ const input = ref('');
 const terminalRef = ref<HTMLElement | null>(null);
 const history = ref<string[]>([
   'Welcome to ZH Code Studio Terminal (Simulation Mode)',
-  'Type "help" to see available hardcoded commands.',
+  'Type "help" to see available commands.',
   ''
 ]);
 const commandHistory = ref<string[]>([]);
 const historyIndex = ref(-1);
-const currentPath = ref('/workspace');
-
 const prompt = 'developer@zhcode:/workspace$ ';
 
-// Fungsi untuk mengendalikan arahan yang di-hardcode
+// Pilihan bentuk kursor
+const cursorShape = ref<'block' | 'bar' | 'underline' | 'dot'>('block');
+const cursorChar = { block: '█', bar: '|', underline: '_', dot: '●' };
+
 const handleCommand = (cmd: string) => {
   const trimmed = cmd.trim();
   if (!trimmed) return;
 
-  // Simpan dalam sejarah arahan (untuk panah atas/bawah)
   commandHistory.value.push(trimmed);
   historyIndex.value = commandHistory.value.length;
-
-  // Paparkan arahan yang ditaip
   history.value.push(`${prompt}${trimmed}`);
+
   const args = trimmed.split(' ');
   const baseCmd = args[0];
 
@@ -32,163 +32,47 @@ const handleCommand = (cmd: string) => {
     case 'clear':
       history.value = [];
       return;
-
     case 'help':
-      history.value.push(
-        'Available simulated commands:',
-        '  ls, pwd, clear',
-        '  npm install, npm run dev',
-        '  git status, git commit -m "msg", git remote -v, git clone <url>',
-        '  sudo apt update, sudo apt install <pkg>',
-        '  python3 --version, node --version',
-        ''
-      );
+      history.value.push('Available commands:', '  ls, pwd, clear, node -v, npm install, npm run dev, git status, git commit -m "msg"', '');
       break;
-
     case 'ls':
-      history.value.push('src/  package.json  README.md  node_modules/  .gitignore', '');
+      history.value.push('src/  package.json  README.md  node_modules/', '');
       break;
-
-    case 'pwd':
-      history.value.push('/workspace', '');
-      break;
-
-    case 'node':
-      if (args[1] === '--version' || args[1] === '-v') history.value.push('v20.11.0', '');
-      else history.value.push('node: missing script', '');
-      break;
-
-    case 'python3':
-      if (args[1] === '--version' || args[1] === '-v') history.value.push('Python 3.11.2', '');
-      break;
-
     case 'npm':
-      if (args[1] === 'install' || args[1] === 'i') {
-        history.value.push(
-          'npm warn deprecated inflight@1.0.6: This module is not supported.',
-          'added 124 packages, and audited 125 packages in 2s',
-          'found 0 vulnerabilities',
-          ''
-        );
-      } else if (args[1] === 'run' && args[2] === 'dev') {
-        history.value.push(
-          '',
-          '  VITE v5.0.0  ready in 345 ms',
-          '',
-          '  ➜  Local:   http://localhost:5173/',
-          '  ➜  Network: use --host to expose',
-          ''
-        );
-      } else {
-        history.value.push(`npm: unknown command "${args[1]}"`, '');
-      }
+      if (args[1] === 'install') history.value.push('added 124 packages in 2s', '');
+      else if (args[1] === 'run') history.value.push('VITE ready in 345 ms', '➜ Local: http://localhost:5173/', '');
       break;
-
     case 'git':
-      if (args[1] === 'status') {
-        history.value.push(
-          'On branch main',
-          'Your branch is up to date with \'origin/main\'.',
-          '',
-          'Changes not staged for commit:',
-          '  (use "git add <file>..." to update what will be committed)',
-          '        modified:   src/App.vue',
-          '',
-          'no changes added to commit (use "git add" and/or "git commit -a")',
-          ''
-        );
-      } else if (args[1] === 'commit') {
-        const msgMatch = trimmed.match(/-m\s+["'](.+?)["']/);
-        const msg = msgMatch ? msgMatch[1] : 'update';
-        history.value.push(`[main 1a2b3c4] ${msg}`, ' 1 file changed, 2 insertions(+), 1 deletion(-)', '');
-      } else if (args[1] === 'remote') {
-        if (args[2] === '-v') {
-          history.value.push(
-            'origin  https://github.com/zhcode/example-repo.git (fetch)',
-            'origin  https://github.com/zhcode/example-repo.git (push)',
-            ''
-          );
-        } else {
-          history.value.push('usage: git remote [-v | --verbose]', '');
-        }
-      } else if (args[1] === 'clone') {
-        const repo = args[2] || 'repo';
-        history.value.push(`Cloning into '${repo.split('/').pop()?.replace('.git', '')}'...`, 'remote: Enumerating objects: 105, done.', 'Receiving objects: 100% (105/105), done.', '');
-      } else {
-        history.value.push(`git: '${args[1]}' is not a git command. See 'git --help'.`, '');
-      }
+      if (args[1] === 'status') history.value.push('On branch main', 'Changes not staged for commit:', '  modified:   src/App.vue', '');
+      else if (args[1] === 'commit') history.value.push('[main 1a2b3c4] commit success', '');
       break;
-
-    case 'sudo':
-      if (args[1] === 'apt') {
-        if (args[2] === 'update') {
-          history.value.push(
-            'Hit:1 http://deb.debian.org/debian bookworm InRelease',
-            'Get:2 http://security.debian.org/debian-security bookworm-security InRelease [48.0 kB]',
-            'Fetched 48.0 kB in 1s (48.0 kB/s)',
-            'Reading package lists... Done',
-            'Building dependency tree... Done',
-            'All packages are up to date.',
-            ''
-          );
-        } else if (args[2] === 'install') {
-          const pkg = args[3] || 'package';
-          history.value.push(
-            `Reading package lists... Done`,
-            `Building dependency tree... Done`,
-            `The following NEW packages will be installed:`,
-            `  ${pkg}`,
-            `0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.`,
-            `Setting up ${pkg} ...`,
-            ''
-          );
-        }
-      } else if (args[1] === 'su') {
-        history.value.push('sudo: must be setuid root', '');
-      } else {
-        history.value.push('usage: sudo <command>', '');
-      }
-      break;
-
     default:
       history.value.push(`bash: ${baseCmd}: command not found`, '');
       break;
   }
 };
 
-// Handle Keypress
 const onKeydown = (e: KeyboardEvent) => {
   if (e.key === 'Enter') {
     handleCommand(input.value);
     input.value = '';
   } else if (e.key === 'ArrowUp') {
     e.preventDefault();
-    if (historyIndex.value > 0) {
-      historyIndex.value--;
-      input.value = commandHistory.value[historyIndex.value];
-    }
+    if (historyIndex.value > 0) { historyIndex.value--; input.value = commandHistory.value[historyIndex.value]; }
   } else if (e.key === 'ArrowDown') {
     e.preventDefault();
-    if (historyIndex.value < commandHistory.value.length - 1) {
-      historyIndex.value++;
-      input.value = commandHistory.value[historyIndex.value];
-    } else {
-      historyIndex.value = commandHistory.value.length;
-      input.value = '';
-    }
-  } else if (e.key === 'l' && e.ctrlKey) {
-    e.preventDefault();
-    history.value = [];
+    if (historyIndex.value < commandHistory.value.length - 1) { historyIndex.value++; input.value = commandHistory.value[historyIndex.value]; }
+    else { historyIndex.value = commandHistory.value.length; input.value = ''; }
+  } else if (e.key === 'Tab') {
+    e.preventDefault(); // Autocomplete ringkas
+    const cmds = ['npm install', 'npm run dev', 'git status', 'git commit -m ""', 'clear', 'ls', 'pwd', 'help'];
+    const match = cmds.find(c => c.startsWith(input.value));
+    if (match) input.value = match;
   }
 };
 
-// Auto-scroll ke bawah
 watch(history, () => {
-  nextTick(() => {
-    if (terminalRef.value) {
-      terminalRef.value.scrollTop = terminalRef.value.scrollHeight;
-    }
-  });
+  nextTick(() => { if (terminalRef.value) terminalRef.value.scrollTop = terminalRef.value.scrollHeight; });
 }, { deep: true });
 
 onMounted(() => {
@@ -199,86 +83,68 @@ onMounted(() => {
 
 <template>
   <div class="terminal-container" @click="() => (document.getElementById('hidden-input') as HTMLInputElement)?.focus()">
+    <!-- Toolbar Pilihan Kursor -->
+    <div class="term-toolbar">
+      <span class="term-label">bash</span>
+      <div class="cursor-options">
+        <label>Kursor:</label>
+        <button @click="cursorShape = 'block'" :class="{ active: cursorShape === 'block' }">█ Block</button>
+        <button @click="cursorShape = 'bar'" :class="{ active: cursorShape === 'bar' }">| Bar</button>
+        <button @click="cursorShape = 'underline'" :class="{ active: cursorShape === 'underline' }">_ Underline</button>
+        <button @click="cursorShape = 'dot'" :class="{ active: cursorShape === 'dot' }">● Dot</button>
+      </div>
+    </div>
+
     <div class="terminal-output" ref="terminalRef">
       <div v-for="(line, i) in history" :key="i" class="term-line">{{ line || '&nbsp;' }}</div>
       
-      <!-- Baris input aktif -->
       <div class="term-line input-line">
         <span class="prompt">{{ prompt }}</span>
         <span class="input-text">{{ input }}</span>
-        <span class="cursor">█</span>
+        <!-- Kursor Dinamik -->
+        <span class="cursor" :class="`cursor-${cursorShape}`">{{ cursorChar[cursorShape] }}</span>
       </div>
     </div>
     
-    <!-- Input tersembunyi untuk tangkap taipan keyboard -->
-    <input
-      id="hidden-input"
-      v-model="input"
-      @keydown="onKeydown"
-      autocomplete="off"
-      spellcheck="false"
-      class="hidden-input"
-    />
+    <input id="hidden-input" v-model="input" @keydown="onKeydown" autocomplete="off" spellcheck="false" class="hidden-input" />
   </div>
 </template>
 
 <style scoped>
 .terminal-container {
-  height: 100%;
-  background-color: #1e1e1e;
-  color: #cccccc;
-  font-family: 'Cascadia Code', 'Fira Code', Menlo, Monaco, 'Courier New', monospace;
-  font-size: 13px;
-  padding: 8px 12px;
-  overflow-y: auto;
-  cursor: text;
-  line-height: 1.4;
+  height: 100%; background-color: #1e1e1e; color: #cccccc;
+  font-family: 'Cascadia Code', 'Fira Code', Menlo, Monaco, monospace;
+  font-size: 13px; padding: 0; overflow-y: auto; cursor: text;
+  display: flex; flex-direction: column;
 }
+.term-toolbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 4px 12px; background: #252526; border-bottom: 1px solid #333;
+  font-size: 12px; position: sticky; top: 0;
+}
+.term-label { color: #cccccc; }
+.cursor-options { display: flex; gap: 4px; align-items: center; }
+.cursor-options label { color: #888; margin-right: 4px; }
+.cursor-options button {
+  background: transparent; border: 1px solid transparent; color: #888;
+  cursor: pointer; padding: 2px 6px; border-radius: 3px;
+}
+.cursor-options button:hover { background: #333; color: #fff; }
+.cursor-options button.active { border-color: #007acc; color: #fff; }
 
-.terminal-output {
-  display: flex;
-  flex-direction: column;
-}
+.terminal-output { flex: 1; padding: 8px 12px; line-height: 1.4; overflow-y: auto; }
+.term-line { white-space: pre-wrap; word-break: break-all; }
+.prompt { color: #0dbc79; font-weight: bold; }
+.input-line { display: flex; align-items: center; }
+.input-text { color: #cccccc; white-space: pre; }
 
-.term-line {
-  white-space: pre-wrap;
-  word-break: break-all;
-}
+/* Animasi Kursor */
+.cursor { display: inline-block; margin-left: 2px; font-weight: bold; }
+.cursor-block { animation: blink 1s step-end infinite; }
+.cursor-bar { animation: blink 1s step-end infinite; }
+.cursor-underline { animation: blink 1s step-end infinite; }
+.cursor-dot { animation: blink 1s step-end infinite; font-size: 10px; }
 
-.prompt {
-  color: #0dbc79; /* Warna hijau terminal VS Code */
-  font-weight: bold;
-}
-
-.input-line {
-  display: flex;
-  align-items: center;
-}
-
-.input-text {
-  color: #cccccc;
-}
-
-.cursor {
-  display: inline-block;
-  width: 8px;
-  height: 15px;
-  background-color: #cccccc;
-  animation: blink 1s step-end infinite;
-  vertical-align: bottom;
-  margin-left: 2px;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.hidden-input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  width: 0;
-  height: 0;
-}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.hidden-input { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; }
 </style>
