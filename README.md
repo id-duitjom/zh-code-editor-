@@ -27,6 +27,7 @@
 
 <p align="center">
   <img src="resources/logos/linux.svg" alt="Penguin Linux dengan tulisan Linux" width="320">
+    <img src="/resources/logos/banner.png" alt="Logo Cline-X-Editor" width="320" height="320">
 </p>
 
 
