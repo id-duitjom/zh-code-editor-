@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: zh
+      POSTGRES_PASSWORD: zh
+      POSTGRES_DB: zhcode
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+
+  backend:
+    build: { context: ., dockerfile: packages/backend/Dockerfile }
+    env_file: .env
+    ports: ["4000:4000"]
+    depends_on: [postgres]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - workspace_data:/data/workspaces
+
+volumes:
+  pgdata:
+  workspace_data:
