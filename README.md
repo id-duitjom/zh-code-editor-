@@ -6,13 +6,16 @@
   <img src="/resources/logos/terminal-studio.svg" alt="Terminal Studio IDE logo" width="120" height="120">
   
   ```bash
-pilihan.
+to All my 4 Bitch Girl🖕🏻❌🤦‍♀️.
+      FuckYou
 "To live a little, you've got to love a whole lot. Love turns the ordinary into the extraordinary."
 Untuk hidup sedikit, kamu harus banyak mencintai. Cinta mengubah yang biasa menjadi luar biasa.
+
 "The love and relationship are all about understanding each other and overlooking the different matters, as well as mistakes."
 Cinta dan hubungan adalah tentang saling memahami dan mengabaikan masalah perbedaan, serta kesalahan.
-"The power of love is the energy that supplies all of your needs." 
+"The power of love is the energy that supplies all of your needs."
 Kekuatan cinta adalah energi yang memasok semua kebutuhanmu.
+
 "Love means patience, kindness, and being happy when you witness the happiness of others." 
 Cinta berarti kesabaran, kebaikan, dan kebahagiaan ketika kamu menyaksikan kebahagiaan orang lain.
 ```
