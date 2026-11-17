@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="520" viewBox="0 0 440 520" role="img" aria-labelledby="title desc">
+  <title id="title">Linux penguin</title>
+  <desc id="desc">A large friendly penguin above the word Linux</desc>
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#27364A"/>
+      <stop offset=".48" stop-color="#111B28"/>
+      <stop offset="1" stop-color="#060A12"/>
+    </linearGradient>
+    <linearGradient id="belly" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#DDE9EA"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2=".9" y2="1">
+      <stop stop-color="#FFE391"/>
+      <stop offset=".55" stop-color="#FFC043"/>
+      <stop offset="1" stop-color="#F18826"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+  <ellipse cx="220" cy="411" rx="141" ry="16" fill="#0A1522" opacity=".22" filter="url(#shadow)"/>
+  <!-- Feet behind the body -->
+  <path d="M184 362c-29 1-58 17-69 34-7 11 1 19 16 18 11 0 19-5 28-7 8 6 16 7 25 5 9-1 15-7 19-16l14-29Z" fill="url(#gold)" stroke="#C37019" stroke-width="3"/>
+  <path d="M256 362c29 1 58 17 69 34 7 11-1 19-16 18-11 0-19-5-28-7-8 6-16 7-25 5-9-1-15-7-19-16l-14-29Z" fill="url(#gold)" stroke="#C37019" stroke-width="3"/>
+  <path d="M170 374c-14 6-27 15-35 27m35-17c-4 8-6 16-5 23m105-33c14 6 27 15 35 27m-35-17c4 8 6 16 5 23" fill="none" stroke="#E99627" stroke-width="3" stroke-linecap="round"/>
+  <!-- Flippers -->
+  <path d="M128 192c-33 19-56 82-58 118-1 24 13 40 27 31 12-8 26-36 43-65Z" fill="#111B28" stroke="#30445A" stroke-width="3"/>
+  <path d="M312 192c33 19 56 82 58 118 1 24-13 40-27 31-12-8-26-36-43-65Z" fill="#111B28" stroke="#30445A" stroke-width="3"/>
+  <!-- Body and face -->
+  <path d="M220 41c-81 0-119 70-119 156 0 78 23 141 58 174 17 16 38 24 61 24s44-8 61-24c35-33 58-96 58-174 0-86-38-156-119-156Z" fill="url(#body)" stroke="#31475D" stroke-width="4"/>
+  <path d="M220 142c-72 0-100 66-100 137 0 68 43 116 100 116s100-48 100-116c0-71-28-137-100-137Z" fill="url(#belly)"/>
+  <path d="M157 90c-18 16-30 45-30 72 0 32 17 55 43 55 25 0 43-22 50-43 7 21 25 43 50 43 26 0 43-23 43-55 0-27-12-56-30-72-16-14-42-20-63-15-21-5-47 1-63 15Z" fill="#FAFEFF"/>
+  <ellipse cx="183" cy="142" rx="9" ry="16" fill="#111827"/>
+  <ellipse cx="257" cy="142" rx="9" ry="16" fill="#111827"/>
+  <circle cx="186" cy="137" r="3" fill="#FFFFFF"/>
+  <circle cx="260" cy="137" r="3" fill="#FFFFFF"/>
+  <path d="M193 172q27-13 54 0l-23 31q-4 6-9 0Z" fill="url(#gold)" stroke="#D77D19" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M206 190q14 9 28 0" fill="none" stroke="#DF922B" stroke-width="2" stroke-linecap="round"/>
+  <!-- Small terminal cursor on the belly -->
+  <rect x="177" y="267" width="86" height="62" rx="12" fill="#122235" stroke="#42B883" stroke-width="3"/>
+  <path d="m191 285 15 13-15 13m24 0h26" fill="none" stroke="#6AE5AE" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Wordmark -->
+  <text x="220" y="487" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="66" font-weight="800" letter-spacing="2" fill="#182636">Linux</text>
+  <path d="M148 501h144" stroke="#42B883" stroke-width="6" stroke-linecap="round"/>
+</svg>
