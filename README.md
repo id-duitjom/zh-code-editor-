@@ -26,7 +26,7 @@
 ## Linux
 
 <p align="center">
-  <img src="resources/logos/fuck-you-github.svg" alt="Penguin Linux dengan tulisan Linux" width="520">
+  <img src="resources/logos/linux.svg" alt="Penguin Linux dengan tulisan Linux" width="320">
 </p>
 
 
