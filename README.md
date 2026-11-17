@@ -4,6 +4,7 @@
   <img src="/resources/logos/banner.png" alt="Logo Cline-X-Editor" width="320" height="320">
   <img src="/resources/logos/badges.png" alt="Technology Badge" width="320" height="320">
   <img src="/resources/logos/terminal-studio.svg" alt="Terminal Studio IDE logo" width="120" height="120">
+  
   ```bash
 <h1>Cline-X-Editor</h1>          # Codebase Editor
   www.cline.editor.com
