@@ -1,5 +1,79 @@
 # ZH Code Studio
 
+<div align="center">
+  <img src="/resources/logos/banner.png" alt="Logo Cline-X-Editor" width="320" height="320">
+  <img src="/resources/logos/badges.png" alt="Technology Badge" width="320" height="320">
+  <img src="/resources/logos/terminal-studio.svg" alt="Terminal Studio IDE logo" width="120" height="120">
+  <h1>Cline-X-Editor Codebase Termimal</h1>
+  <h3>Modern IDE + Terminal Platform</h3>
+  <p>Cline-X-Editor</p>
+  <p>Built with Vue 3, TypeScript, Monaco Editor and xterm.js</p>
+</div>
+
+## Badges
+
+![Vue 3](https://img.shields.io/badge/Vue_3-42B883?style=for-the-badge&logo=vuedotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![xterm.js](https://img.shields.io/badge/xterm.js-000000?style=for-the-badge)
+![Monaco Editor](https://img.shields.io/badge/Monaco_Editor-007ACC?style=for-the-badge)
+
+## Linux
+
+<p align="center">
+  <img src="resources/logos/fuck-you-github.svg" alt="Penguin Linux dengan tulisan Linux" width="520">
+</p>
+
+
+## Overview
+
+Terminal Studio IDE ialah platform pembangunan moden yang menggabungkan:
+
+- Monaco Editor
+- xterm.js Terminal
+- Workspace Management
+- File Explorer
+- Git Integration
+- AI Assistant
+- Plugin Marketplace
+- Authentication
+- WebContainer Support
+
+## Features
+
+Status berikut dikekalkan daripada dokumentasi asal dan belum disahkan terhadap kod projek.
+
+| Module | Status |
+| --- | --- |
+| Monaco Editor | Sedia |
+| xterm.js Terminal | Sedia |
+| File Explorer | Sedia |
+| Workspace | Sedia |
+| Authentication | Sedia |
+| WebSocket | Sedia |
+| AI Assistant | Sedia |
+| Plugin Marketplace | Dalam pembangunan |
+| Collaboration | Dalam pembangunan |
+| Cloud Sync | Dalam pembangunan |
+
+## Technology Stack
+
+### Frontend
+
+| Technology | Purpose |
+| --- | --- |
+| Vue 3 | UI Framework |
+| TypeScript | Type Safety |
+| Pinia | State Management |
+| Vite | Build Tool |
+| Monaco Editor | Code Editor |
+| xterm.js | Terminal |
+
 Editor kod dalam browser berinspirasikan VS Code: Vue 3 + Monaco + terminal sebenar dalam container.
 
 ## Prasyarat
