@@ -1,0 +1,22 @@
+{
+  "name": "@zh/frontend",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": { "dev": "vite", "build": "vue-tsc -b && vite build" },
+  "dependencies": {
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0",
+    "pinia": "^2.3.0",
+    "monaco-editor": "^0.52.2",
+    "@xterm/xterm": "^5.5.0",
+    "@xterm/addon-fit": "^0.10.0",
+    "@xterm/addon-web-links": "^0.11.0",
+    "axios": "^1.7.9"
+  },
+  "devDependencies": {
+    "vite": "^6.0.7",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vue-tsc": "^2.2.0",
+    "vite-plugin-monaco-editor-esm": "^1.0.3"
+  }
+}
