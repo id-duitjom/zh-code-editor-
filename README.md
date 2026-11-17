@@ -4,12 +4,13 @@
   <img src="/resources/logos/banner.png" alt="Logo Cline-X-Editor" width="320" height="320">
   <img src="/resources/logos/badges.png" alt="Technology Badge" width="320" height="320">
   <img src="/resources/logos/terminal-studio.svg" alt="Terminal Studio IDE logo" width="120" height="120">
-  <h1>Cline-X-Editor Codebase Termimal</h1>
+  ```bash
+<h1>Cline-X-Editor</h1>          # Codebase Editor
+  www.cline.editor.com
+Built with Vue 3,
   <h3>Modern IDE + Terminal Platform</h3>
-  <p>Cline-X-Editor</p>
-  <p>Built with Vue 3, TypeScript, Monaco Editor and xterm.js</p>
-</div>
-
+  <p>Cline-X-Editor</p>          # <p>TypeScript, Monaco Editor and xterm.js</p>
+```
 ## Badges
 
 ![Vue 3](https://img.shields.io/badge/Vue_3-42B883?style=for-the-badge&logo=vuedotjs&logoColor=white)
