@@ -38,6 +38,8 @@ app.use(
 
 app.use('/api/auth', authRoutes);
 app.use('/api/workspaces', workspaceRoutes);
+import fileRoutes from './workspace/fileRoutes.js';
+app.use('/api/workspaces/:workspaceId', fileRoutes);
 app.use('/api/workspaces/:workspaceId/git', gitRoutes);
 
 // Preview proxy mesti didaftarkan SEBELUM fallback
