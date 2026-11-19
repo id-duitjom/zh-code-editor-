@@ -1873,3 +1873,31 @@ codex mcp add firecrawl --url https://mcp.firecrawl.dev/v2/mcp-oauth
 codex mcp login firecrawl --no-browser
 codex mcp list
 ```
+
+## 46. Gemini CLI
+
+Pastikan Node.js versi 20 atau lebih baharu tersedia:
+
+```bash
+node --version
+npm --version
+```
+
+Pasang Gemini CLI secara global dan jalankannya:
+
+```bash
+npm install -g @google/gemini-cli
+gemini --version
+gemini
+```
+
+Semasa penggunaan pertama, ikut arahan untuk log masuk dengan akaun Google. Untuk mengemas
+kini atau membuang Gemini CLI:
+
+```bash
+npm update -g @google/gemini-cli
+npm uninstall -g @google/gemini-cli
+```
+
+Rujuk arahan rasmi di https://github.com/google-gemini/gemini-cli. Jangan simpan API key dalam
+fail yang akan di-commit.
