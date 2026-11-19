@@ -3,6 +3,10 @@
 import { ref, onMounted, nextTick, watch } from 'vue';
 
 const input = ref('');
+const commandInput = ref<HTMLInputElement>();
+function focusInput() {
+  commandInput.value?.focus();
+}
 const terminalRef = ref<HTMLElement | null>(null);
 const history = ref<string[]>([
   'Welcome to ZH Code Studio Terminal (Simulation Mode)',
@@ -75,14 +79,11 @@ watch(history, () => {
   nextTick(() => { if (terminalRef.value) terminalRef.value.scrollTop = terminalRef.value.scrollHeight; });
 }, { deep: true });
 
-onMounted(() => {
-  const inputEl = document.getElementById('hidden-input');
-  if (inputEl) inputEl.focus();
-});
+onMounted(focusInput);
 </script>
 
 <template>
-  <div class="terminal-container" @click="() => (document.getElementById('hidden-input') as HTMLInputElement)?.focus()">
+  <div class="terminal-container" @click="focusInput">
     <!-- Toolbar Pilihan Kursor -->
     <div class="term-toolbar">
       <span class="term-label">bash</span>
@@ -106,7 +107,7 @@ onMounted(() => {
       </div>
     </div>
     
-    <input id="hidden-input" v-model="input" @keydown="onKeydown" autocomplete="off" spellcheck="false" class="hidden-input" />
+    <input ref="commandInput" v-model="input" @keydown="onKeydown" autocomplete="off" spellcheck="false" class="hidden-input" />
   </div>
 </template>
 

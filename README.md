@@ -56,20 +56,7 @@ Terminal Studio IDE ialah platform pembangunan moden yang menggabungkan:
 
 ## Features
 
-Status berikut dikekalkan daripada dokumentasi asal dan belum disahkan terhadap kod projek.
-
-| Module | Status |
-| --- | --- |
-| Monaco Editor | Sedia |
-| xterm.js Terminal | Sedia |
-| File Explorer | Sedia |
-| Workspace | Sedia |
-| Authentication | Sedia |
-| WebSocket | Sedia |
-| AI Assistant | Sedia |
-| Plugin Marketplace | Dalam pembangunan |
-| Collaboration | Dalam pembangunan |
-| Cloud Sync | Dalam pembangunan |
+Lihat [matriks ciri](FEATURE-MATRIX.md) untuk skop yang tersedia dan kerja yang masih berbaki.
 
 ## Technology Stack
 
@@ -87,19 +74,27 @@ Status berikut dikekalkan daripada dokumentasi asal dan belum disahkan terhadap 
 Editor kod dalam browser berinspirasikan VS Code: Vue 3 + Monaco + terminal sebenar dalam container.
 
 ## Prasyarat
-- Node.js 20+, pnpm 9+
+- Node.js 20+, pnpm 9+, Python 3, make dan pengkompil C++ untuk node-pty
 - PostgreSQL 16 (atau Docker)
 - Docker Engine (untuk workspace runner)
 - Akaun Resend (atau SMTP) untuk e-mel
 
 ## Pasang & Jalankan
 ```bash
-cp .env.example .env          # isi nilai sebenar
+cp .env.example .env          # isi nilai sebenar sebelum meneruskan
 pnpm install
 docker compose up -d postgres
-pnpm db:generate && pnpm db:migrate
+docker build -f packages/backend/Dockerfile.workspace -t zhcode/workspace:latest .
+set -a
+. ./.env
+set +a
+pnpm db:migrate
 pnpm dev                      # frontend :5173, backend :4000
 ```
+
+Tetapkan `SESSION_SECRET` sekurang-kurangnya 32 aksara dan `WORKSPACE_STORAGE_ROOT` kepada direktori mutlak yang boleh ditulis oleh backend dan boleh dilekapkan oleh Docker Engine. Kontena workspace menggunakan UID 1000. Untuk akses melalui alamat selain `http://localhost:5173`, gunakan origin sebenar dalam `FRONTEND_ORIGIN`.
+
+Kontena sedia ada masih menggunakan imej asal selepas imej baharu dibina. Cipta workspace baharu untuk mencuba profil shell baharu.
 
 ## Cipta akaun pertama
 1. Buka `http://localhost:5173/register`.
@@ -115,3 +110,37 @@ pnpm dev                      # frontend :5173, backend :4000
 | Git push | GitHub App / token repo ujian |
 | Debug Node/Python | `launch.json` + debugger adapter |
 | Preview | DNS wildcard `*.preview.domain` |
+
+## Terminal dan alat pembangunan
+
+Terminal Bash menjalankan Node.js, npm, npx, Git dan Python daripada imej Debian. Butang `+` membuka sesi tambahan dalam panel yang sama. Butang pemisah memaparkan dua sesi bersama Explorer dan editor. Gunakan **Ctrl + Shift + F** untuk carian projek, **Ctrl + B** untuk sidebar dan **Ctrl + backtick** untuk panel terminal.
+
+```bash
+node --version
+npm --version
+npx --version
+python --version
+git --version
+
+python -m venv .venv
+. .venv/bin/activate
+python -m pip install requests
+```
+
+Node.js telah dipasang dalam imej. `npm install` memasang dependency projek. Gunakan `git commit -m "Mesej"` untuk commit dan tetapkan `origin` secara berasingan sebagai nama remote.
+
+Untuk Firecrawl, jalankan arahan berikut dalam terminal workspace.
+
+```bash
+codex --version
+codex mcp add firecrawl --url https://mcp.firecrawl.dev/v2/mcp-oauth
+codex mcp login firecrawl --no-browser
+```
+
+1. Buka pautan autorisasi yang dipaparkan dalam pelayar. Log masuk ke Firecrawl dan pilih pasukan.
+2. Jika pelayar memaparkan ralat sambungan selepas menghala ke `127.0.0.1`, salin URL penuh daripada bar alamat dan tampal terus ke prompt Codex dalam terminal workspace. URL itu mengandungi kod log masuk sementara.
+3. Selepas Codex mengesahkan log masuk, jalankan `codex mcp list` untuk menyemak entri Firecrawl.
+
+Bina semula imej workspace dan cipta workspace baharu untuk menggunakan Codex CLI dan `python -m venv`. Akses Git remote dan registry pakej memerlukan rangkaian dan kelayakan yang sesuai.
+
+Runner ini menggunakan Debian bersama `apt` dengan akses pengguna biasa. Kemas kini atau tambah pakej sistem melalui [Dockerfile.workspace](packages/backend/Dockerfile.workspace). `sudo apt upgrade`, `pkg` dan runtime OS/VM lain belum tersedia.

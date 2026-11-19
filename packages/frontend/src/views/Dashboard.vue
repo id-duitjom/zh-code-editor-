@@ -13,8 +13,14 @@ async function load() {
   finally { loading.value = false; }
 }
 async function create() {
-  await api.post('/workspaces', { name: name.value || 'Untitled', template: template.value });
-  name.value = ''; await load();
+  error.value = '';
+  try {
+    await api.post('/workspaces', { name: name.value || 'Untitled', template: template.value });
+    name.value = '';
+    await load();
+  } catch {
+    error.value = 'Gagal mencipta workspace';
+  }
 }
 onMounted(load);
 </script>

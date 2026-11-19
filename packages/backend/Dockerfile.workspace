@@ -1,11 +1,22 @@
 FROM node:20-bookworm-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git python3 python3-pip bash curl ca-certificates \
+    git python3 python3-pip python3-venv python-is-python3 bash zsh fish curl wget ca-certificates \
+    openssh-client iputils-ping procps iproute2 findutils grep ncurses-bin \
+ && wget -qO /tmp/microsoft-prod.deb https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb \
+ && dpkg -i /tmp/microsoft-prod.deb \
+ && rm /tmp/microsoft-prod.deb \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends powershell \
  && rm -rf /var/lib/apt/lists/*
 
-RUN useradd -m -u 1000 developer
-USER developer
+ARG CODEX_CLI_VERSION=0.170.0
+RUN corepack enable \
+ && npm install --global "@openai/codex@${CODEX_CLI_VERSION}"
+
+USER node
+RUN corepack install --global pnpm@9.15.0 yarn@1.22.22 \
+ && touch /home/node/.zshrc
 WORKDIR /workspace
 
 # Toolchain tambahan boleh dipasang mengikut template

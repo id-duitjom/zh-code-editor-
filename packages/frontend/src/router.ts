@@ -6,8 +6,7 @@ const router = createRouter({
   routes: [
     { path: '/signin', component: () => import('./views/SignIn.vue') },
     { path: '/register', component: () => import('./views/Register.vue') },
-    { path: '/forgot-password', component: () => import('./views/ForgotPassword.vue') },
-    { path: '/reset-password', component: () => import('./views/ResetPassword.vue') },
+    { path: '/verify-email', component: () => import('./views/VerifyEmail.vue') },
     { path: '/', component: () => import('./views/Dashboard.vue'), meta: { requiresAuth: true } },
     { path: '/workspace/:id', component: () => import('./views/Workspace.vue'), meta: { requiresAuth: true } },
   ],

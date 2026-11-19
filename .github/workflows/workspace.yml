@@ -1,0 +1,66 @@
+name: Workspace checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  workspace:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: zh
+          POSTGRES_PASSWORD: zh
+          POSTGRES_DB: zhcode
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U zh -d zhcode"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgres://zh:zh@127.0.0.1:5432/zhcode
+      FRONTEND_ORIGIN: http://127.0.0.1:5173
+      PREVIEW_DOMAIN: preview.localhost
+      SESSION_SECRET: test-only-secret-for-editor-workspace-ci
+      EMAIL_PROVIDER: smtp
+      EMAIL_FROM: test@example.test
+      APP_BASE_URL: http://127.0.0.1:5173
+      WORKSPACE_STORAGE_ROOT: /tmp/zh-workspaces-e2e
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: node --test packages/frontend/tests/*.test.mjs
+      - name: Make fixture directories writable by the workspace container
+        run: |
+          sudo apt-get install --yes acl postgresql-client
+          mkdir -p "$WORKSPACE_STORAGE_ROOT"
+          setfacl -m u:1000:rwx,d:u:1000:rwx "$WORKSPACE_STORAGE_ROOT"
+      - run: pnpm db:migrate
+      - run: pnpm --filter @zh/backend exec tsx src/db/seedE2E.ts
+      - run: docker build -f packages/backend/Dockerfile.workspace -t zhcode/workspace:latest .
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm exec playwright test
+      - name: Verify an automatic backup can be restored
+        env:
+          WORKSPACE_BACKUP_DIR: /tmp/zh-backups-e2e
+          RESTORE_DATABASE_URL: postgres://zh:zh@127.0.0.1:5432/zhrestore
+          PGPASSWORD: zh
+        run: |
+          createdb --maintenance-db="$DATABASE_URL" zhrestore
+          snapshot=$(scripts/workspace-backup.sh backup)
+          scripts/workspace-backup.sh restore "$snapshot" /tmp/zh-restore-e2e
+          diff -r "$WORKSPACE_STORAGE_ROOT" /tmp/zh-restore-e2e
+          test "$(psql "$DATABASE_URL" -Atc 'select count(*) from workspaces')" = "$(psql "$RESTORE_DATABASE_URL" -Atc 'select count(*) from workspaces')"
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: workspace-test-results
+          path: test-results/

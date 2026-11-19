@@ -6,7 +6,7 @@ const schema = z.object({
   FRONTEND_ORIGIN: z.string().url(),
   PREVIEW_DOMAIN: z.string(),
   SESSION_SECRET: z.string().min(32),
-  COOKIE_SECURE: z.coerce.boolean().default(false),
+  COOKIE_SECURE: z.enum(['true', 'false']).default('false').transform(value => value === 'true'),
   DATABASE_URL: z.string(),
   EMAIL_PROVIDER: z.enum(['resend', 'smtp']).default('resend'),
   RESEND_API_KEY: z.string().optional(),

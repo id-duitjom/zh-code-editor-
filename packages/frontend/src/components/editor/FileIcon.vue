@@ -2,138 +2,14 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-type IconName =
-  | 'folder'
-  | 'file'
-  | 'html'
-  | 'vue'
-  | 'javascript'
-  | 'typescript'
-  | 'react'
-  | 'css'
-  | 'sass'
-  | 'json'
-  | 'markdown'
-  | 'python'
-  | 'terminal'
-  | 'environment'
-  | 'git'
-  | 'npm'
-  | 'config'
-  | 'image'
-  | 'database'
-  | 'lock';
-
-interface FileInfo {
-  icon: IconName;
-  color: string;
-}
+import { getFileIcon } from '../../utils/fileIcons';
 
 const props = defineProps<{
   filename: string;
   isFolder: boolean;
 }>();
 
-const exactNames: Record<string, FileInfo> = {
-  '.gitignore': { icon: 'git', color: '#F05032' },
-  '.gitattributes': { icon: 'git', color: '#F05032' },
-  '.gitmodules': { icon: 'git', color: '#F05032' },
-
-  'package.json': { icon: 'npm', color: '#CB3837' },
-  'package-lock.json': { icon: 'lock', color: '#CB3837' },
-  'yarn.lock': { icon: 'lock', color: '#2C8EBB' },
-  'pnpm-lock.yaml': { icon: 'lock', color: '#F9AD00' },
-  'bun.lock': { icon: 'lock', color: '#E9D5BD' },
-  'bun.lockb': { icon: 'lock', color: '#E9D5BD' },
-
-  'dockerfile': { icon: 'config', color: '#2496ED' },
-  'makefile': { icon: 'terminal', color: '#89E051' },
-};
-
-const extensionIcons: Record<string, FileInfo> = {
-  html: { icon: 'html', color: '#E34F26' },
-  htm: { icon: 'html', color: '#E34F26' },
-
-  vue: { icon: 'vue', color: '#42B883' },
-
-  js: { icon: 'javascript', color: '#F7DF1E' },
-  mjs: { icon: 'javascript', color: '#F7DF1E' },
-  cjs: { icon: 'javascript', color: '#F7DF1E' },
-
-  ts: { icon: 'typescript', color: '#3178C6' },
-  mts: { icon: 'typescript', color: '#3178C6' },
-  cts: { icon: 'typescript', color: '#3178C6' },
-
-  jsx: { icon: 'react', color: '#61DAFB' },
-  tsx: { icon: 'react', color: '#3178C6' },
-
-  css: { icon: 'css', color: '#663399' },
-  scss: { icon: 'sass', color: '#CD6799' },
-  sass: { icon: 'sass', color: '#CD6799' },
-
-  json: { icon: 'json', color: '#E5C07B' },
-  jsonc: { icon: 'json', color: '#E5C07B' },
-
-  md: { icon: 'markdown', color: '#519ABA' },
-  mdx: { icon: 'markdown', color: '#519ABA' },
-
-  py: { icon: 'python', color: '#3776AB' },
-  pyw: { icon: 'python', color: '#3776AB' },
-
-  sh: { icon: 'terminal', color: '#89E051' },
-  bash: { icon: 'terminal', color: '#89E051' },
-  zsh: { icon: 'terminal', color: '#89E051' },
-  ps1: { icon: 'terminal', color: '#5391FE' },
-  bat: { icon: 'terminal', color: '#89E051' },
-  cmd: { icon: 'terminal', color: '#89E051' },
-
-  env: { icon: 'environment', color: '#ECD53F' },
-
-  yaml: { icon: 'config', color: '#CB171E' },
-  yml: { icon: 'config', color: '#CB171E' },
-  toml: { icon: 'config', color: '#9C7B65' },
-  ini: { icon: 'config', color: '#AAB2BF' },
-
-  svg: { icon: 'image', color: '#FFB13B' },
-  png: { icon: 'image', color: '#A074C4' },
-  jpg: { icon: 'image', color: '#A074C4' },
-  jpeg: { icon: 'image', color: '#A074C4' },
-  webp: { icon: 'image', color: '#A074C4' },
-  gif: { icon: 'image', color: '#A074C4' },
-  ico: { icon: 'image', color: '#A074C4' },
-
-  sql: { icon: 'database', color: '#E5C07B' },
-  sqlite: { icon: 'database', color: '#54AEFF' },
-  db: { icon: 'database', color: '#54AEFF' },
-
-  lock: { icon: 'lock', color: '#AAB2BF' },
-};
-
-const fileInfo = computed<FileInfo>(() => {
-  if (props.isFolder) {
-    return { icon: 'folder', color: '#DCB67A' };
-  }
-
-  const name =
-    props.filename.replace(/\\/g, '/').split('/').pop()?.toLowerCase() ?? '';
-
-  const exactMatch = exactNames[name];
-
-  if (exactMatch) {
-    return exactMatch;
-  }
-
-  if (name === '.env' || name.startsWith('.env.')) {
-    return { icon: 'environment', color: '#ECD53F' };
-  }
-
-  const extension = name.includes('.') ? name.split('.').pop() ?? '' : '';
-
-  return extensionIcons[extension] ?? {
-    icon: 'file',
-    color: '#AAB2BF',
-  };
-});
+const fileInfo = computed(() => getFileIcon(props.filename, props.isFolder));
 </script>
 
 <template>
@@ -195,6 +71,9 @@ const fileInfo = computed<FileInfo>(() => {
       <circle cx="12" cy="9" r=".9" fill="currentColor" stroke="none" />
       <circle cx="12" cy="15" r=".9" fill="currentColor" stroke="none" />
     </g>
+    <g v-else-if="fileInfo.icon === 'readme'">
+      <path d="M12 19c-3-2-5-2-10-2V5c5 0 7 0 10 2 3-2 5-2 10-2v12c-5 0-7 0-10 2Zm0 0V7" />
+    </g>
     <!-- Markdown -->
     <g v-else-if="fileInfo.icon === 'markdown'">
       <rect x="1.5" y="5" width="21" height="14" rx="2" />
@@ -206,6 +85,11 @@ const fileInfo = computed<FileInfo>(() => {
       <path d="M12 22c6 0 5-3 5-3v-3h-6v-1h8s3 0 3-5-3-5-3-5h-2v3s0 3-3 3H9s-3 0-3 3v5s0 3 6 3Z" fill="#FFD343" />
       <circle cx="10" cy="5.5" r="1" fill="#FFF" />
       <circle cx="14" cy="18.5" r="1" fill="#FFF" />
+    </g>
+    <g v-else-if="fileInfo.icon === 'php'" stroke="none">
+      <path fill="currentColor" d="M7 6a5 5 0 0 0-5 5v3l-1 2 1 1 2-2v4h3l.4-4H11l.5 4H15v-5h2v1.5a3.5 3.5 0 0 0 7 0V14h-2v1.5a1.5 1.5 0 0 1-3 0V11a5 5 0 0 0-5-5Z" />
+      <circle cx="16.5" cy="9.5" r="1" fill="#161522" />
+      <path d="M12 8c-2 0-3.5 1.4-3.5 3s1.5 3 3.5 3" stroke="#161522" stroke-width="1.2" />
     </g>
     <!-- Terminal -->
     <g v-else-if="fileInfo.icon === 'terminal'">

@@ -4,3 +4,5 @@ dist
 secrets/
 *.pem
 data/
+test-results/
+playwright-report/

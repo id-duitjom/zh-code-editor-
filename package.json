@@ -6,9 +6,20 @@
     "dev": "pnpm -r --parallel dev",
     "build": "pnpm -r build",
     "db:generate": "pnpm --filter @zh/backend db:generate",
-    "db:migrate": "pnpm --filter @zh/backend db:migrate"
+    "db:migrate": "pnpm --filter @zh/backend db:migrate",
+    "start": "pnpm --filter @zh/backend start"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.1",
     "typescript": "^5.6.3"
+  },
+  "pnpm": {
+    "packageExtensions": {
+      "node-pty@*": {
+        "dependencies": {
+          "node-gyp": "^11.5.0"
+        }
+      }
+    }
   }
 }

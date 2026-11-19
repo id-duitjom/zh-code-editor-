@@ -1,14 +1,14 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import monacoEditorPlugin from 'vite-plugin-monaco-editor-esm';
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  plugins: [vue(), monacoEditorPlugin({})],
+  plugins: [vue(), tailwindcss()],
   server: {
     port: 5173,
     proxy: {
-      '/api': { target: 'http://localhost:4000', changeOrigin: true },
-      '/ws': { target: 'ws://localhost:4000', ws: true },
+      '/api': { target: 'http://127.0.0.1:4000', changeOrigin: true },
+      '/ws': { target: 'ws://127.0.0.1:4000', ws: true },
     },
   },
 });

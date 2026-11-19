@@ -27,7 +27,6 @@ async function submit() {
       <button type="button" @click="show = !show">{{ show ? 'Hide' : 'Show' }}</button></span>
     </label>
     <button class="primary" :disabled="loading">{{ loading ? 'Menghantar...' : 'Sign In' }}</button>
-    <router-link to="/forgot-password">Forgot Password?</router-link>
     <router-link to="/register">Create Account</router-link>
   </form>
 </template>

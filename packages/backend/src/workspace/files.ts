@@ -9,12 +9,16 @@ export async function safeWorkspacePath(userId: string, workspaceId: string, rel
   if (!target.startsWith(root + path.sep) && target !== root) {
     throw new Error('PATH_TRAVERSAL');
   }
-  // Tolak symlink yang keluar dari root
-  try {
-    const real = await fs.realpath(target);
-    if (!real.startsWith(root + path.sep) && real !== root) throw new Error('SYMLINK_ESCAPE');
-  } catch (e: any) {
-    if (e.code !== 'ENOENT') throw e;
+  let current = target;
+  while (true) {
+    try {
+      if ((await fs.lstat(current)).isSymbolicLink()) throw new Error('SYMLINK_NOT_ALLOWED');
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+    }
+    if (current === root) break;
+    current = path.dirname(current);
   }
+  if (relative && target === root) throw new Error('WORKSPACE_ROOT_REQUIRED');
   return target;
 }
