@@ -1,0 +1,19 @@
+name = "zh-code-auth"
+main = "src/index.ts"
+compatibility_date = "2026-11-19"
+
+[vars]
+APP_NAME = "ZH Code Studio"
+APP_ORIGIN = "https://code.example.com"
+AUTH_WORKER_ORIGIN = "https://auth.example.workers.dev"
+FROM_EMAIL = "ZH Code Studio <noreply@example.com>"
+ALLOWED_ORIGINS = "https://code.example.com,http://localhost:5173"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "zh-code-auth"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+[[kv_namespaces]]
+binding = "AUTH_KV"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
