@@ -42,6 +42,8 @@ Cinta berarti kesabaran, kebaikan, dan kebahagiaan ketika kamu menyaksikan kebah
 
 ## Overview
 
+[Prompt penuh ZH Code Studio](ZH-CODE-STUDIO-FULL-PROMPT.md) merangkumi fungsi, susun atur, warna, ikon, arahan bina dan semua fail sumber.
+
 Terminal Studio IDE ialah platform pembangunan moden yang menggabungkan:
 
 - Monaco Editor
